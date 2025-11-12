@@ -468,15 +468,15 @@ impl<'a> GitCheckout<'a> {
             let mut source = GitSource::new(
                 SourceId::from_url(&format!("git+{child_remote_url}#{head}"))?,
                 gctx,
-            )
-            .with_context(|| {
-                let name = child.name().unwrap_or("");
-                format!("failed to fetch submodule `{name}` from {child_remote_url}",)
-            })?;
+            )?;
             source.set_quiet(true);
 
             let (db, actual_rev) = source.update_db()?;
-            db.copy_to(actual_rev, &repo.path(), gctx)?;
+            db.copy_to(actual_rev, &repo.path(), gctx)
+                .with_context(|| {
+                    let name = child.name().unwrap_or("");
+                    format!("failed to fetch submodule `{name}` from {child_remote_url}",)
+                })?;
 
             let obj = repo.find_object(head, None)?;
             reset(&repo, &obj, gctx)
