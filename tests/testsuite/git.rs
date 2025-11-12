@@ -1060,7 +1060,7 @@ Caused by:
   failed to update submodule `src`
 
 Caused by:
-  object not found - no match for id ([..]); class=Odb (9); code=NotFound (-3)
+  revspec '[..]' not found; class=Reference (4); code=NotFound (-3)
 
 "#]];
 
